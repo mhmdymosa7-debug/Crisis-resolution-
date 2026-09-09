@@ -19,7 +19,7 @@ source.dir = .
 version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy,pandas
+requirements = python3,kivy
 
 # (str) Supported orientations
 orientation = portrait
