@@ -36,7 +36,7 @@ android.minapi = 21
 # (int) Automatically accept Android SDK licenses
 android.accept_sdk_license = True
 
-# (list) Supported architectures (التعديل الهامة: تحديد معمارية واحدة لتسريع البناء ومنع الأخطاء)
+# (list) Supported architectures (single architecture to speed up build and prevent errors)
 android.archs = arm64-v8a
 
 [buildozer]
