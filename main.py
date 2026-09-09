@@ -6,19 +6,22 @@ import re
 DATA_FILE = "app_database.json"
 
 def load_data():
+    """Load data from JSON file"""
     if os.path.exists(DATA_FILE):
         try:
             with open(DATA_FILE, 'r', encoding='utf-8') as f:
                 return json.load(f)
-        except:
+        except Exception:
             return {}
     return {}
 
 def save_data(data):
+    """Save data to JSON file"""
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 def extract_number(text):
+    """Extract number from text"""
     numbers = re.findall(r'\d+\.?\d*', str(text))
     if numbers:
         return float(numbers[0])
@@ -26,32 +29,52 @@ def extract_number(text):
 
 def main(page: ft.Page):
     page.title = "نظام السجلات والملفات الذكية"
-    page.rtl = True  # تفعيل الاتجاه من اليمين ليسار للدعم العربي الكامل
+    page.rtl = True
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.bgcolor = "#E1F5FE"  # خلفية سماوية فاتحة
+    page.bgcolor = "#E1F5FE"
 
     data = load_data()
 
-    # شاشة تفاصيل الملف
     def open_detail_view(file_name):
+        """Open detailed view for a specific file"""
         page.clean()
         
-        person_input = ft.TextField(label="اسم الشخص / الطالب", hint_text="مثال: احمد سالم", border_radius=10)
-        amount_input = ft.TextField(label="المبلغ", hint_text="مثال: 100 جنيه", border_radius=10)
-        detail_input = ft.TextField(label="التفصيل", hint_text="مثال: اشترى زيت", border_radius=10)
+        person_input = ft.TextField(
+            label="اسم الشخص / الطالب",
+            hint_text="مثال: احمد سالم",
+            border_radius=10
+        )
+        amount_input = ft.TextField(
+            label="المبلغ",
+            hint_text="مثال: 100 جنيه",
+            border_radius=10
+        )
+        detail_input = ft.TextField(
+            label="التفصيل",
+            hint_text="مثال: اشترى زيت",
+            border_radius=10
+        )
         
         records_column = ft.ListView(expand=1, spacing=10, padding=10)
-        total_text = ft.Text("المجموع الكلي: 0", size=16, weight=ft.FontWeight.BOLD, color="#01579B")
+        total_text = ft.Text(
+            "المجموع الكلي: 0",
+            size=16,
+            weight=ft.FontWeight.BOLD,
+            color="#01579B"
+        )
 
         def update_records_display():
+            """Update the records display"""
             records_column.controls.clear()
             current_data = load_data()
             records = current_data.get(file_name, [])
             total_sum = 0.0
             
             if not records:
-                records_column.controls.append(ft.Text("لا توجد سجلات في هذا الملف بعد", color="grey"))
+                records_column.controls.append(
+                    ft.Text("لا توجد سجلات في هذا الملف بعد", color="grey")
+                )
             else:
                 for r in records:
                     val = extract_number(r['amount'])
@@ -71,6 +94,7 @@ def main(page: ft.Page):
             page.update()
 
         def add_record(e):
+            """Add a new record to the file"""
             if person_input.value and amount_input.value and detail_input.value:
                 current_data = load_data()
                 if file_name in current_data:
@@ -85,17 +109,27 @@ def main(page: ft.Page):
                     detail_input.value = ""
                     update_records_display()
 
-        add_btn = ft.ElevatedButton("إضافة السجل داخل الملف", on_click=add_record, bgcolor="#0288D1", color="white")
+        add_btn = ft.ElevatedButton(
+            "إضافة السجل داخل الملف",
+            on_click=add_record,
+            bgcolor="#0288D1",
+            color="white"
+        )
         
-        # زر العودة والشريط السفلي
         def go_back(e):
+            """Go back to main menu"""
             main_menu_view()
 
-        back_btn = ft.ElevatedButton("العودة للرئيسية", on_click=go_back, bgcolor="#D32F2F", color="white")
+        back_btn = ft.ElevatedButton(
+            "العودة للرئيسية",
+            on_click=go_back,
+            bgcolor="#D32F2F",
+            color="white"
+        )
 
         bottom_bar = ft.Row(
             [
-                total_text,  # المجموع في الجهة اليسرى (بسبب اتجاه التطبيق أو تنظيمه)
+                total_text,
                 back_btn
             ],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
@@ -113,14 +147,19 @@ def main(page: ft.Page):
         )
         update_records_display()
 
-    # الشاشة الرئيسية (إدارة الملفات)
     def main_menu_view():
+        """Main menu view for file management"""
         page.clean()
         
-        file_name_input = ft.TextField(label="اسم الملف الجديد", hint_text="مثال: حسابي أنا واحمد", border_radius=10)
+        file_name_input = ft.TextField(
+            label="اسم الملف الجديد",
+            hint_text="مثال: حسابي أنا واحمد",
+            border_radius=10
+        )
         files_column = ft.ListView(expand=1, spacing=10, padding=10)
 
         def create_file(e):
+            """Create a new file"""
             name = file_name_input.value.strip()
             if name:
                 current_data = load_data()
@@ -130,19 +169,26 @@ def main(page: ft.Page):
                     file_name_input.value = ""
                     refresh_file_list()
 
-        create_btn = ft.ElevatedButton("إنشاء ملف جديد", on_click=create_file, bgcolor="#388E3C", color="white")
+        create_btn = ft.ElevatedButton(
+            "إنشاء ملف جديد",
+            on_click=create_file,
+            bgcolor="#388E3C",
+            color="white"
+        )
 
         def refresh_file_list():
+            """Refresh the list of files"""
             files_column.controls.clear()
             current_data = load_data()
             if not current_data:
-                files_column.controls.append(ft.Text("لا توجد ملفات حتى الآن", color="grey"))
+                files_column.controls.append(
+                    ft.Text("لا توجد ملفات حتى الآن", color="grey")
+                )
             else:
                 for fn in current_data.keys():
-                    # تصميم الملفات بشكل مستطيل ذو حواف دائرية بارزة باللون الذهبي الفاخر
                     file_card = ft.Container(
                         content=ft.Text(fn, size=18, weight=ft.FontWeight.BOLD, color="#3E2723"),
-                        bgcolor="#FFD700",  # لون ذهبي
+                        bgcolor="#FFD700",
                         padding=15,
                         border_radius=15,
                         alignment=ft.alignment.center,
