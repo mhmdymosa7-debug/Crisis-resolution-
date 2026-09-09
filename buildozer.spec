@@ -9,7 +9,7 @@ package.name = sudanrelief
 # (str) Package domain (needed for android packaging)
 package.domain = org.sudan.relief
 
-# (list) Source files to include (let it include python files and assets)
+# (list) Source files to include
 source.exts = py,png,jpg,kv,atlas,csv
 
 # (str) Application source directory
@@ -27,14 +27,17 @@ orientation = portrait
 # (list) Permissions
 android.permissions = WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 
-# (str) Supported Android API, default is to have to
+# (str) Supported Android API
 android.api = 31
 
 # (str) Minimum API your APK will support
 android.minapi = 21
 
-# (int) Automatically accept Android SDK licenses (هذا هو الحل الحاسم لمنع توقف التثبيت)
+# (int) Automatically accept Android SDK licenses
 android.accept_sdk_license = True
+
+# (list) Supported architectures (التعديل الهامة: تحديد معمارية واحدة لتسريع البناء ومنع الأخطاء)
+android.archs = arm64-v8a
 
 [buildozer]
 log_level = 2
