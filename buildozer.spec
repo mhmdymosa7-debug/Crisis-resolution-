@@ -10,7 +10,7 @@ package.name = sudanrelief
 package.domain = org.sudan.relief
 
 # (list) Source files to include
-source.exts = py,png,jpg,kv,atlas,csv
+source.exts = py,png,jpg,csv
 
 # (str) Application source directory
 source.dir = .
@@ -18,8 +18,8 @@ source.dir = .
 # (str) Application versioning
 version = 1.0
 
-# (list) Application requirements
-requirements = python3,kivy
+# (list) Application requirements - FIXED: Changed from kivy to flet
+requirements = python3,flet
 
 # (str) Supported orientations
 orientation = portrait
