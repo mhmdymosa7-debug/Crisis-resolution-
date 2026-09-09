@@ -25,6 +25,12 @@ jobs:
             zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev \
             build-essential ccache libltdl-dev
 
+    - name: Set JAVA_HOME
+      run: echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> $GITHUB_ENV
+
+    - name: Verify Java version
+      run: java -version
+
     - name: Install Python build tools and Buildozer
       run: |
         python -m pip install --upgrade pip
@@ -34,6 +40,8 @@ jobs:
     - name: Build Android package with Buildozer
       run: |
         buildozer -v android debug
+      env:
+        JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
