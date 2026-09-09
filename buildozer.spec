@@ -12,21 +12,15 @@ package.domain = org.sudan.relief
 # (list) Source files to include (let it include python files and assets)
 source.exts = py,png,jpg,kv,atlas,csv
 
-# (list) Source files to exclude (optional)
-#source.exclude_exts = spec
-
-# (list) List of inclusion/exclusion patterns
-#source.include_patterns = assets/*,images/*.png
-
-# (str) Application source directory
-# Here is the fix for the missing source.dir error
+# (str) Application source directory (هذا هو السطر الذي يمنع خطأ missing source.dir)
 source.dir = .
 
 # (str) Application versioning
 version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy,pandas
+# تحديد إصدارات واضحة ومتوافقة لأندرويد
+requirements = python3,kivy,pandas,numpy,certifi
 
 # (str) Supported orientations
 orientation = portrait
@@ -34,6 +28,13 @@ orientation = portrait
 # (list) Permissions
 android.permissions = WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 
+# (str) Supported Android API
+android.api = 33
+
+# (str) Minimum API your APK will support
+android.minapi = 21
+
 [buildozer]
 log_level = 2
 warn_on_root = 1
+bin_dir = ./bin
