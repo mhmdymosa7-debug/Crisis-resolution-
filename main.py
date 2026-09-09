@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
-import pandas as pd
+import csv
 import os
 
 class ReliefApp(App):
@@ -39,11 +39,13 @@ class ReliefApp(App):
             self.status_label.text = "الرجاء تعبئة جميع الحقول!"
             return
             
-        data = {'Region': [region], 'Shelter': [shelter], 'Count': [int(count)]}
-        df = pd.DataFrame(data)
-        
         file_exists = os.path.exists('local_relief.csv')
-        df.to_csv('local_relief.csv', mode='a', index=False, header=not file_exists)
+        
+        with open('local_relief.csv', mode='a', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            if not file_exists:
+                writer.writerow(['Region', 'Shelter', 'Count']) # كتابة العناوين أول مرة
+            writer.writerow([region, shelter, count])
         
         self.status_label.text = f"تم حفظ بيانات '{shelter}' بنجاح!"
         self.region_input.text = ""
